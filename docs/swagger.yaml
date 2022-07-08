@@ -1,11 +1,20 @@
 info:
-  contact: {}
+  contact:
+    email: svk@codecowboydotio
+    name: API Support
+  description: Swagger API for Golang Project for git rest api
+  license:
+    name: MIT
+    url: https://github.com/codecowboydotio/go-rest-api/blob/main/LICENSE
+  termsOfService: http://swagger.io/terms/
+  title: GO Rest API Swagger API
+  version: "1.0"
 paths:
   /:
-    get:
+    post:
       consumes:
       - '*/*'
-      description: get the status of server.
+      description: Pull a github repository down.
       produces:
       - application/json
       responses:
@@ -14,7 +23,7 @@ paths:
           schema:
             additionalProperties: true
             type: object
-      summary: Show the status of server.
+      summary: Pull a github repository down.
       tags:
       - root
 swagger: "2.0"

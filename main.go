@@ -8,10 +8,10 @@ import (
         "net/url"
         "github.com/gin-gonic/gin"
 	"github.com/go-git/go-git/v5"
-        "github.com/swaggo/files"
         swaggerFiles "github.com/swaggo/files"
         "github.com/swaggo/gin-swagger"
-        "./docs"
+        _ "github.com/codecowboydotio/go-rest-api/docs"
+        _ "github.com/codecowboydotio/go-rest-api/models"
 )
 
 
@@ -20,16 +20,26 @@ func homeLink(c *gin.Context) {
         c.JSON(http.StatusOK, gin.H{"data": "Welcome Home!"})
 }
 
+// @BasePath /api/v1
+// HealthCheck godoc
+// @Summary Pull a github repository down.
+// @Description Pull a github repository down.
+// @Tags root
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Router / [post]
 func gitPull(c *gin.Context) {
         // check the filesystem.
         // if it exists just do a pull
         // otherwise do a clone
         //var json  struct - should be externalised as part of model
-        json := struct { 
+////        json := struct { 
         // We don't need a destination here as we will be using a standardised destination on the server
-            Url string `json:"url" binding:"required"`
-            Branch string `json:"branch" binding:"required"`
-        }{}
+////            Url string `json:"url" binding:"required"`
+////            Branch string `json:"branch" binding:"required"`
+////        }{}
+        var json models.repository
 
         if err := c.BindJSON(&json); err == nil {
            // IF NO ERROR IN BINDING
@@ -71,14 +81,14 @@ func newApp(c *gin.Context) {
 }
 
 
-// HealthCheck godoc
-// @Summary Show the status of server.
-// @Description get the status of server.
-// @Tags root
-// @Accept */*
-// @Produce json
-// @Success 200 {object} map[string]interface{}
-// @Router / [get]
+// @title GO Rest API Swagger API
+// @version 1.0
+// @description Swagger API for Golang Project for git rest api
+// @termsOfService http://swagger.io/terms/
+// @contact.name API Support
+// @contact.email svk@codecowboydotio
+// @license.name MIT
+// @license.url https://github.com/codecowboydotio/go-rest-api/blob/main/LICENSE
 func main() {
 	router := gin.Default()
         router.GET("/", homeLink)

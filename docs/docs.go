@@ -10,15 +10,23 @@ const docTemplate = `{
     "info": {
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
-        "contact": {},
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "API Support",
+            "email": "svk@codecowboydotio"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://github.com/codecowboydotio/go-rest-api/blob/main/LICENSE"
+        },
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
         "/": {
-            "get": {
-                "description": "get the status of server.",
+            "post": {
+                "description": "Pull a github repository down.",
                 "consumes": [
                     "*/*"
                 ],
@@ -28,7 +36,7 @@ const docTemplate = `{
                 "tags": [
                     "root"
                 ],
-                "summary": "Show the status of server.",
+                "summary": "Pull a github repository down.",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -45,12 +53,12 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "",
+	Version:          "1.0",
 	Host:             "",
 	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "",
-	Description:      "",
+	Title:            "GO Rest API Swagger API",
+	Description:      "Swagger API for Golang Project for git rest api",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 }

@@ -1,4 +1,4 @@
-module go-rest-api
+module github.com/codecowboydotio/go-rest-api
 
 go 1.16
 
