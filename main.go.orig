@@ -1,0 +1,37 @@
+package main
+
+import (
+	"fmt"
+	"log"
+	"net/http"
+
+	//"github.com/gorilla/mux"
+        "github.com/gin-gonic/gin"
+)
+
+func homeLink(w http.ResponseWriter, r *http.Request) {
+        // send to swagger docs
+	fmt.Fprint(w, "Welcome home!")
+}
+
+func gitPull(w http.ResponseWriter, r *http.Request) {
+        // check the filesystem.
+        // if it exists just do a pull
+        // otherwise do a clone
+	fmt.Fprint(w, "GIT PULL")
+}
+
+func newApp(w http.ResponseWriter, r *http.Request) {
+        // Send new request to local unit that configures an app
+        // need language type as a varible.
+
+	fmt.Fprint(w, "NEW APP")
+}
+
+func main() {
+	router := mux.NewRouter().StrictSlash(false)
+	router.HandleFunc("/app", newApp)
+	router.HandleFunc("/pull", gitPull)
+	router.HandleFunc("/", homeLink)
+	log.Fatal(http.ListenAndServe(":8080", router))
+}
