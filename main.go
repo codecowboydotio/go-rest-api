@@ -8,10 +8,10 @@ import (
         "net/url"
         "github.com/gin-gonic/gin"
 	"github.com/go-git/go-git/v5"
+	"github.com/go-git/go-git/v5/plumbing"
         swaggerFiles "github.com/swaggo/files"
         "github.com/swaggo/gin-swagger"
         _ "github.com/codecowboydotio/go-rest-api/docs"
-        _ "github.com/codecowboydotio/go-rest-api/models"
 )
 
 
@@ -34,12 +34,11 @@ func gitPull(c *gin.Context) {
         // if it exists just do a pull
         // otherwise do a clone
         //var json  struct - should be externalised as part of model
-////        json := struct { 
+        json := struct { 
         // We don't need a destination here as we will be using a standardised destination on the server
-////            Url string `json:"url" binding:"required"`
-////            Branch string `json:"branch" binding:"required"`
-////        }{}
-        var json models.repository
+            Url string `json:"url" binding:"required"`
+            Branch string `json:"branch" binding:"required"`
+        }{}
 
         if err := c.BindJSON(&json); err == nil {
            // IF NO ERROR IN BINDING
@@ -51,12 +50,27 @@ func gitPull(c *gin.Context) {
            targetUrl, err := url.Parse(json.Url)
            r, err := git.PlainClone("/apps/" + path.Base(targetUrl.Path), false, &git.CloneOptions{
               URL:      json.Url,
+              ReferenceName: plumbing.ReferenceName(fmt.Sprintf("refs/heads/%s", json.Branch)),
+	      SingleBranch:  true,
               Progress: os.Stdout,
            })
            fmt.Printf("goober: %s\n", r) 
            if err != nil {
            //At this point, if there is something in the repository it means it has been cloned before
            //We should do a pull to update it rather than a clone.
+             if err.Error() == "repository already exists" {
+               r, err := git.PlainOpen("/apps/" + path.Base(targetUrl.Path))
+               w, err := r.Worktree() 
+               pull := w.Pull(&git.PullOptions{
+                 RemoteName: "origin",
+                 ReferenceName: plumbing.ReferenceName(fmt.Sprintf("refs/heads/%s", json.Branch)),
+               })
+               fmt.Printf("repo exists path: %s\n", r)
+               fmt.Printf("repo worktree: %s\n", w)
+               fmt.Printf("pulled error: %s\n", err)
+               fmt.Printf("pull: %s\n", pull)
+               if err != nil { fmt.Printf(err.Error()) }
+             } // end if repository exists
              c.JSON(http.StatusOK, gin.H{
                    "error": err.Error(),
                    "message": json.Url})
