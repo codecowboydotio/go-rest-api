@@ -17,7 +17,7 @@ import (
 
 func homeLink(c *gin.Context) {
         // send to swagger docs
-        c.JSON(http.StatusOK, gin.H{"data": "Welcome Home!"})
+        c.Redirect(http.StatusFound, "/swagger/index.html")
 }
 
 // @BasePath /api/v1
@@ -104,7 +104,7 @@ func newApp(c *gin.Context) {
 // @license.name MIT
 // @license.url https://github.com/codecowboydotio/go-rest-api/blob/main/LICENSE
 func main() {
-	router := gin.Default()
+	router := gin.New()
         router.GET("/", homeLink)
         router.POST("/pull", gitPull)
         router.GET("/app", newApp)
