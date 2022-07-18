@@ -25,10 +25,11 @@ func homeLink(c *gin.Context) {
 // @Summary Pull a github repository down.
 // @Description Pull a github repository down.
 // @Tags root
-// @Accept */*
+// @Accept application/json
 // @Produce json
+// @Param   branch body string true "Branch Name"
 // @Success 200 {object} map[string]interface{}
-// @Router / [post]
+// @Router /pull [post]
 func gitPull(c *gin.Context) {
         // check the filesystem.
         // if it exists just do a pull
