@@ -22,12 +22,6 @@ paths:
         required: true
         schema:
           type: string
-      - description: Repository URL
-        in: body
-        name: url
-        required: true
-        schema:
-          type: string
       produces:
       - application/json
       responses:
