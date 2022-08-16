@@ -2,8 +2,11 @@ package main
 
 import (
 	"fmt"
+        "log"
         "os"
         "path"
+        "reflect"
+        "io/ioutil"
 	"net/http"
         "net/url"
         "github.com/gin-gonic/gin"
@@ -12,6 +15,7 @@ import (
         swaggerFiles "github.com/swaggo/files"
         "github.com/swaggo/gin-swagger"
         _ "github.com/codecowboydotio/go-rest-api/docs"
+        "github.com/tidwall/sjson"
 )
 
 
@@ -92,7 +96,15 @@ func newApp(c *gin.Context) {
         // Send new request to local unit that configures an app
         // need language type as a varible.
 
-        c.JSON(http.StatusOK, gin.H{"data": "NEW APP"})
+        content, err := ioutil.ReadFile("./template")
+        if err != nil {
+            log.Fatal("Error when opening file: ", err)
+        }
+        println(content)
+        ajson, _ := sjson.Set("", "app", "version")
+        println(ajson)
+        fmt.Println(reflect.TypeOf(ajson).String())
+        c.JSON(http.StatusOK, gin.H{})
 }
 
 
