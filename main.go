@@ -48,10 +48,11 @@ func gitPull(c *gin.Context) {
 
         if err := c.BindJSON(&json); err == nil {
            // IF NO ERROR IN BINDING
-           c.JSON(http.StatusOK, gin.H{ 
-             "url": json.Url,
-             "branch": json.Branch,
-           })
+           //c.JSON(http.StatusOK, gin.H{ 
+           //  "url": json.Url,
+           //  "branch": json.Branch,
+           //})
+           fmt.Printf("No error in JSON binding: URL: %s Branch: %s\n", json.Url, json.Branch) 
            // Perform GIT pull as a first try
            targetUrl, err := url.Parse(json.Url)
            r, err := git.PlainClone("/apps/" + path.Base(targetUrl.Path), false, &git.CloneOptions{
@@ -60,7 +61,7 @@ func gitPull(c *gin.Context) {
 	      SingleBranch:  true,
               Progress: os.Stdout,
            })
-           fmt.Printf("Return from git pull: %s\n", r) 
+           fmt.Printf("Return from git clone: %s\n", r) 
            if err != nil {
            //At this point, if there is something in the repository it means it has been cloned before
            //We should do a pull to update it rather than a clone.
@@ -72,6 +73,10 @@ func gitPull(c *gin.Context) {
                  ReferenceName: plumbing.ReferenceName(fmt.Sprintf("refs/heads/%s", json.Branch)),
                })
                fmt.Printf("pull: %s\n", pull)
+               //fmt.Printf("pull: %T\n", pull)
+               c.JSON(http.StatusOK, gin.H{
+                     "message": pull.Error()})
+               return
                if err != nil { fmt.Printf(err.Error()) }
              } // end if repository exists
              c.JSON(http.StatusOK, gin.H{
