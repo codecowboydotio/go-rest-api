@@ -73,14 +73,22 @@ func gitPull(c *gin.Context) {
                  ReferenceName: plumbing.ReferenceName(fmt.Sprintf("refs/heads/%s", json.Branch)),
                })
                fmt.Printf("pull: %s\n", pull)
-               //fmt.Printf("pull: %T\n", pull)
+               fmt.Printf("pull: %T\n", pull)
                if pull != nil {
+               fmt.Printf("pull error: %s\n", pull.Error())
                  c.JSON(http.StatusOK, gin.H{
                        "message": pull.Error(),
                        "repository": json.Url,
                        "branch": json.Branch})
                  return
-               } //end pull.error
+               } else { //end pull.error
+                 fmt.Printf("pull error: %s\n", pull.Error())
+                   c.JSON(http.StatusOK, gin.H{
+                         "message": pull.Error(),
+                         "repository": json.Url,
+                         "branch": json.Branch})
+                   return
+               }  //end pull no error
                if err != nil { fmt.Printf(err.Error()) }
              } // end if repository exists
              c.JSON(http.StatusOK, gin.H{
