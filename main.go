@@ -74,16 +74,28 @@ func gitPull(c *gin.Context) {
                })
                fmt.Printf("pull: %s\n", pull)
                //fmt.Printf("pull: %T\n", pull)
-               c.JSON(http.StatusOK, gin.H{
-                     "message": pull.Error()})
-               return
+               if pull != nil {
+                 c.JSON(http.StatusOK, gin.H{
+                       "message": pull.Error(),
+                       "repository": json.Url,
+                       "branch": json.Branch})
+                 return
+               } //end pull.error
                if err != nil { fmt.Printf(err.Error()) }
              } // end if repository exists
              c.JSON(http.StatusOK, gin.H{
                    "error": err.Error(),
-                   "message": json.Url})
+                   "repository": json.Url,
+                   "branch": json.Branch})
              return
-           } // end if error on Plainclone
+           } else {
+             //If we hit here then there is no error in the original PlainClone()
+             c.JSON(http.StatusOK, gin.H{
+                   "repository": json.Url,
+                   "status": "success",
+                   "branch": json.Branch})
+             return
+           }// end if error on Plainclone
         } else {
            fmt.Printf("stuff: %s\n", json.Url)
            // IF WE HIT HERE IT MEANS THERE IS AN ERROR IN BINDING
