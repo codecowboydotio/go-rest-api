@@ -30,7 +30,7 @@ func homeLink(c *gin.Context) {
 // @Summary Pull a github repository down.
 // @Description Pull a github repository down.
 // @Tags root
-// @Accept application/json
+// @Accept json
 // @Produce json
 // @Param   branch body string true "Branch Name"
 // @Success 200 {object} map[string]interface{}
@@ -60,7 +60,7 @@ func gitPull(c *gin.Context) {
 	      SingleBranch:  true,
               Progress: os.Stdout,
            })
-           fmt.Printf("goober: %s\n", r) 
+           fmt.Printf("Return from git pull: %s\n", r) 
            if err != nil {
            //At this point, if there is something in the repository it means it has been cloned before
            //We should do a pull to update it rather than a clone.
@@ -71,9 +71,6 @@ func gitPull(c *gin.Context) {
                  RemoteName: "origin",
                  ReferenceName: plumbing.ReferenceName(fmt.Sprintf("refs/heads/%s", json.Branch)),
                })
-               fmt.Printf("repo exists path: %s\n", r)
-               fmt.Printf("repo worktree: %s\n", w)
-               fmt.Printf("pulled error: %s\n", err)
                fmt.Printf("pull: %s\n", pull)
                if err != nil { fmt.Printf(err.Error()) }
              } // end if repository exists
