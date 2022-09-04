@@ -262,3 +262,5 @@ gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c/go.mod h1:K4uyk7z7BCEPqu6E+C
 gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=
 gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b h1:h8qDotaEPuJATrMmW04NCwg7v22aHH28wwpauUhK9Oo=
 gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=
+unit.nginx.org/go v0.0.0-20220831114915-5f7bba4cc968 h1:H2lBT5WfJQI5MNy3ee3dH6tFatby8Bb/as9tMoo7qL4=
+unit.nginx.org/go v0.0.0-20220831114915-5f7bba4cc968/go.mod h1:rIOZelt2HNxH+Usc1WT2b5OlEDHQwc3IZRxYxiZiKvM=

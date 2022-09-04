@@ -16,6 +16,7 @@ import (
         "github.com/swaggo/gin-swagger"
         _ "github.com/codecowboydotio/go-rest-api/docs"
         "github.com/tidwall/sjson"
+        "unit.nginx.org/go"
 )
 
 
@@ -123,5 +124,6 @@ func main() {
         router.GET("/app", newApp)
         router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-        router.Run(":8081")
+        unit.ListenAndServe(":8080", router)
+        //router.Run(":8081")
 }
